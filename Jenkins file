@@ -1,0 +1,25 @@
+pipeline {
+    agent { label 'jdk17' }
+    triggers {
+        pollSCM('* * * * *')
+    }
+    tools {
+        maven 'maven3.9'
+        jdk 'JDK-17' 
+    }
+    stages {
+        stage('git spc') {
+            steps { 
+                git url: 'https://github.com/spring-projects/spring-petclinic.git',
+                    branch: 'main'
+            }
+        }
+        stages { 
+            stage('maven') {
+                steps {
+                    sh script: 'mvn package'
+                }
+            }
+        }
+    }
+}    
